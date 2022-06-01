@@ -1,0 +1,24 @@
+
+
+<div fxLayoutAlign="center center"  fxFlexFill class="main-div" >
+  <!-- <img src="../../assets/images/premo.png"> -->
+    <mat-card fxFlex="25" class="main-div" >
+        <!-- <mat-toolbar color="warn">Login Page</mat-toolbar> -->
+        <mat-card-title fxLayoutAlign="center center" >
+          <img src="../../assets/images/premo.png" >
+        </mat-card-title>
+        
+        <form class="example-form" fxLayoutAlign="stretch" fxLayout="column" class="login-form" class="container"
+        [formGroup]="formGroup" (ngSubmit)="loginProcess()">
+      
+            <mat-form-field >
+              <input matInput placeholder="Username" formControlName="username">
+            </mat-form-field>
+            <mat-form-field >
+                <input matInput placeholder="Password" type="password" formControlName="password">
+            </mat-form-field>
+            <button mat-raised-button  color="warn" type="submit">Login</button>
+        
+          </form>
+    </mat-card>
+</div>

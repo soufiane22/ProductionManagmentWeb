@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
+import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -16,28 +12,16 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ContentLayoutComponent } from './components/content-layout/content-layout.component';
-import { AuthGuard } from './guard/auth.guard';
-import { AuthInterceptor } from './guard/auth.interceptor';
-import { AuthService } from './shared/services/auth.service';
-import { ForbiddenComponent } from './components/forbidden/forbidden.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { SharedModule } from './shared/shared.module';
+import { ToastrModule } from 'ngx-toastr';
+
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginComponent,
-    ContentLayoutComponent,
-    ForbiddenComponent,
-    NotFoundComponent,
     
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
+    CommonModule,
     FlexLayoutModule,
     MatFormFieldModule,
     MatInputModule,
@@ -51,17 +35,7 @@ import { SharedModule } from './shared/shared.module';
     MatIconModule,
     MatDividerModule,
     FontAwesomeModule,
-    SharedModule
-    
-  ],
-  providers: [ AuthGuard ,
-  
-    //  { provide: HTTP_INTERCEPTORS,
-    //    useClass:AuthInterceptor,
-    //    multi:true
-    //   },
-    
-       AuthService],
-  bootstrap: [AppComponent]
+    ToastrModule.forRoot(),
+  ]
 })
-export class AppModule { }
+export class SharedModule { }

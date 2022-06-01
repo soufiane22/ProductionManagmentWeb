@@ -1,0 +1,83 @@
+
+
+<nav class="navbar navbar-expand-lg " style=" background-color:rgb(143, 143, 143) ;">
+  <div class="container-fluid">
+    <a mat-icon-button *ngIf="sidenav.mode === 'side'" (click)="sidenav.toggle()" style="color:white;">
+      <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
+      <mat-icon *ngIf="sidenav.opened">close</mat-icon>
+    </a>
+  <span class="navbar-brand" >
+    
+    <!-- <img src="../../../../assets/images/logo.png" style="width: 80px; height:50px"> -->
+  </span>
+
+  <div fxFlex fxLayoutAlign="flex-end center">
+       <button type="button" class="btn btn-danger" (click)="logout()">Logout</button>
+   </div>
+ 
+
+     
+        <!-- <button class="btn btn-outline-danger  text-right" (click)="logout()" >Logout</button> -->
+    
+  </div>
+</nav>
+
+
+<mat-sidenav-container>
+
+  <mat-sidenav mode="side" opened="true" #sidenav="matSidenav">
+
+    <div class="user">
+           <h4 class="name">Najim Beniss</h4>
+           <p class="designation">Production controler</p>
+    </div>
+ 
+    <mat-divider></mat-divider>
+    <ul class="nav">
+        <li mat-button routerLink="home" routerLinkActive="active" class="nav-item">
+          <a class="nav-link"  style="color:white">
+              <mat-icon style="vertical-align:middle;">home</mat-icon>&nbsp;
+            <span >Home</span>
+          </a>
+          
+        </li>
+        <li mat-button routerLink="/admin/notification-hours" routerLinkActive="active" class="nav-item">
+          <a class="nav-link"  style="color:white">
+              <mat-icon style="vertical-align:middle;">notifications_active</mat-icon>&nbsp;
+              <span >Hours Notifications</span>
+          </a>
+        </li>
+
+        <li mat-button routerLink="/admin/presence" routerLinkActive="active" class="nav-item">
+          <a class="nav-link" routerLink="home" style="color:white">
+              <mat-icon style="vertical-align:middle;">person_pin</mat-icon>&nbsp;
+              <span >Presence</span>
+          </a>
+        </li>
+        <li mat-button routerLink="/home" routerLinkActive="active" class="nav-item">
+          <a class="nav-link" routerLink="home" style="color:white">
+              <mat-icon style="vertical-align:middle;">group</mat-icon>&nbsp;
+              <span >Groups</span>
+          </a>
+        </li>
+     
+    
+    </ul>
+    <mat-divider></mat-divider>
+    <ul class="nav">
+    <li mat-button routerLink="/home" routerLinkActive="active" class="nav-item">
+      <a class="nav-link" routerLink="home" style="color:white">
+          <mat-icon style="vertical-align:middle;">exit_to_app</mat-icon>&nbsp;
+          <span >Logout</span>
+      </a>
+    </li>
+    </ul>
+
+  </mat-sidenav>
+  <mat-sidenav-content>
+
+          <router-outlet></router-outlet>
+
+
+  </mat-sidenav-content>
+</mat-sidenav-container> 

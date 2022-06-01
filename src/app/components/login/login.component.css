@@ -1,0 +1,29 @@
+
+.main-div{
+    padding: 0;
+}
+.login-form{
+    padding: 20px;
+}
+
+.container{
+  padding: 15px;
+  width:300 px ;
+  height: 200px;
+}
+
+ ::ng-deep .mat-focused .mat-form-field-label {
+  /*change color of label*/
+  color: #d3a306 !important;
+ }
+
+ ::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: #d3a306 !important;
+} 
+
+::ng-deep.mat-form-field-ripple {
+ /*change color of underline when focused*/
+ background-color: #d3a306 !important;;
+}
+
