@@ -1,9 +1,37 @@
+<div fxLayoutAlign="center center" fxFlexFill class="main-div" class="mt-4">
+  
+  <p-card header="Login" [style]="{'width': '25rem', 'margin-bottom': '2em' , 'text-align':'center'}">
+    <div *ngIf="show"  class="d-flex justify-content-center" >
+      <div class="spinner-border" role="status">
+          <span align="center !important" class="sr-only" id="loading"></span>
+      </div>
+  </div>
+    <ng-template pTemplate="header">
+      <div style="text-align: center;">
+        <img src="assets/images/premo.png" style="width: 200px; height:190px" class="rounded mx-auto d-block">
+      </div>
+    </ng-template>
+    <form class="example-form" fxLayoutAlign="stretch" fxLayout="column" class="login-form" class="container"
+      [formGroup]="formGroup" (ngSubmit)="loginProcess()">
+      <span class="p-float-label">
+        <input type="text" pInputText formControlName="username" class="inputfield w-full"/>
+        <label for="float-input">Username</label>
+      </span>
+
+      <span class="p-float-label">
+        <input type="password" pInputText formControlName="password" />
+        <label for="float-input">Password</label>
+      </span>
+      <button pButton pRipple type="submit" label="Login" class="p-button-danger"></button>
+    </form>
+
+  </p-card>
 
 
-<div fxLayoutAlign="center center"  fxFlexFill class="main-div" >
+
   <!-- <img src="../../assets/images/premo.png"> -->
-    <mat-card fxFlex="25" class="main-div" >
-        <!-- <mat-toolbar color="warn">Login Page</mat-toolbar> -->
+  <!-- <mat-card fxFlex="25" class="main-div" >
+
         <mat-card-title fxLayoutAlign="center center" >
           <img src="../../assets/images/premo.png" >
         </mat-card-title>
@@ -20,5 +48,5 @@
             <button mat-raised-button  color="warn" type="submit">Login</button>
         
           </form>
-    </mat-card>
+    </mat-card> -->
 </div>

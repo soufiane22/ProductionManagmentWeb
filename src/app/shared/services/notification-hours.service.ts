@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { baseurl } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 import { AuthService } from './auth.service';
 import { UserAuthService } from './user-auth.service';
-const url = baseurl+"notification_heures/"
+const url = environment.baseurl+"notification_heures/"
 @Injectable({
   providedIn: 'root'
 })
@@ -15,7 +15,7 @@ export class NotificationHoursService {
 
    headers_object = new HttpHeaders({
     'Content-Type': 'application/json',
-     'Authorization': 'test token',
+     'Authorization': this.token,
      'X-Requested-With':'XMLHttpRequest'})
   
       httpOptions = {
@@ -32,9 +32,32 @@ export class NotificationHoursService {
     
     const requestHeadrs = new HttpHeaders().set('Authorization',this.token).set('Content-Type', 'application/json')
 
-    console.log("this.token =====>",this.token);
-     return this.http.get<any>( `${url}getAll`,this.httpOptions); //{headers:requestHeadrs}  `${baseurl}user/test`
+     return this.http.get<any>( `${url}getAll`); //{headers:requestHeadrs}  `${baseurl}user/test`
   }
 
+  getNotifsHoursByDate(date){
+    return this.http.get<any>( `${url}getbydate/${date}`);
+  }
+  getNotifsHoursByOf(of){
+    return this.http.get<any>(`${url}getbyof/${of}`);
+  }
+
+  getNotifsHoursBeteenTowDates(startDate,endDate){
+    return this.http.get<any>(`${url}getbetween/${startDate}/${endDate}`);
+  }
+
+
+
+  updateNotification(notif, id){
+    return  this.http.put<any>(`${url}update/${id}`,notif);
+  }
+
+  getNotifsHoursBeteenTowDatesByLine(startDate,endDate,idLine){
+    return this.http.get<any>(`${url}getbetween/line/${startDate}/${endDate}/${idLine}`);
+  }
+
+  getNotifsHoursBeteenTowDatesByProduct(startDate,endDate,idProduct){
+    return this.http.get<any>(`${url}getbetween/product/${startDate}/${endDate}/${idProduct}`);
+  }
  
 }

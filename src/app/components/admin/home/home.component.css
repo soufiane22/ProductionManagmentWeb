@@ -1,0 +1,102 @@
+.card-body {
+    border-radius: 10px;
+    color: white;
+}
+.card{
+    border: none;
+    color: #07cc00f3;
+}
+.icon{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+i {
+    font-size: 2rem;
+}
+:host ::ng-deep  .p-component{
+    height: auto !important;
+}
+.header_item{
+    font-size: 10px;
+    color: white;
+}
+
+
+.row > table{
+    width : 100%;
+    border: 1px solid rgb(255, 128, 128);
+    border-collapse: collapse;
+    /* table-layout: fixed; */
+}
+
+.table1{
+  width : 100%;
+  /* table-layout: fixed; */
+ /* border: none; */
+}
+
+
+  th,td{
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    text-align: center;
+    /* width: 30%; */
+    word-wrap: break-word;
+  }
+  .table_data{
+    font-size: 11px;
+    padding-bottom: 2px;
+    /* text-align: center; */
+    /* padding-left: 10px;*/
+
+  }
+
+
+   
+   thead {
+      /* display: table;  to take the same width as tr */
+    /*   width: calc(100% - 100%);   - 17px because of the scrollbar width */
+    background-color: rgb(230, 5, 5);
+    color: white;
+    border-bottom: 1px solid white;
+  }
+  tbody {
+ /*  display: block;  to enable vertical scrolling */
+    max-height: 100px;
+    overflow-y: scroll;  /* keeps the scrollbar even if it doesn't need it; display purpose   */
+  }
+
+
+  thead > th{
+    border: 1px solid white;
+  }
+  
+  
+tbody > tr {
+ line-height: 12px; 
+ border-top: 1px solid white;
+
+}
+
+/******* vertical scroll with header fixed*****/
+.table-sticky>thead>tr>th,
+.table-sticky>thead>tr>td {
+/*	color: #fff;*/
+	top: 0px;
+  bottom: 10px;
+  background-color: rgb(230, 5, 5);
+  color: #ffffff;
+	position: sticky;
+}
+
+.table-height {
+	height: 500px;
+	display: block;
+	overflow: scroll;
+	width: 100%;
+}

@@ -1,0 +1,121 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <h3> Accounts Managment</h3>
+        </div>
+
+        <div class="card">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4" style="text-align: right;">
+                    <p-button label="Add" icon="pi pi-plus" styleClass="p-button-sm" routerLink="/admin/accounts/add">
+                    </p-button>
+
+                </div>
+
+            </div>
+            <div *ngIf="!show" class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span align="center !important" class="sr-only" id="loading"></span>
+                </div>
+            </div>
+            <br>
+            <p-toast position="top-right" key="tl"></p-toast>
+            <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+            <div class="row">
+                <div class="col-md-12">
+                    <p-table [value]="listAcounts" styleClass="p-datatable-striped p-datatable-sm" styleClass="myTable"
+                        [rowHover]="true" [rows]="10" #dt1 [lazy]="false" editMode="row" dataKey="id"   [paginator]="true" 
+                        [globalFilterFields]="['user.matricule','user.nom', 'user.prenom', 'user.fonction']">
+                        <ng-template pTemplate="caption">
+
+                            <div class="flex-end" style="text-align: right;">
+                                <span class="p-input-icon-right ml-auto">
+                                    <i class="pi pi-search"></i>
+                                    <input pInputText type="text" #textInput
+                                        (input)="dt1.filterGlobal(textInput.value, 'startsWith')"
+                                        placeholder="Search keyword" />
+                                </span>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Register Number</th>
+                                <th>Last Name</th>
+                                <th>First Name</th>
+                                <th>Function</th>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th style="width: 12%">Action</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-account>
+                            <tr>
+                                <td>{{account.user.matricule}}</td>
+                                <td>{{account.user.nom}}</td>
+                                <td>{{account.user.prenom}}</td>
+                                <td>{{account.user.fonction}}</td>
+                                <td>{{account.username}}</td>
+                                <td>{{account.roles[0].name}}</td>
+                                <td>
+                                    <button pButton pRipple type="button" icon="pi pi-pencil"
+                                        class="p-button-rounded p-button-warning p-button-text"
+                                        (click)="onEditAccount(account)"></button>
+                                    <button pButton pRipple type="button" icon="pi pi-trash"
+                                        class="p-button-rounded p-button-warning p-button-text"
+                                        (click)="deleteaccount(account)" style="color: red;"></button>
+                                </td>
+                            </tr>
+
+                        </ng-template>
+                    </p-table>
+                    <p-dialog header="Update Password for {{accountSelected?.username}}" [(visible)]="display"
+                        [style]="{width: '50vw'}">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <span>Username : </span>&nbsp;
+                                <span style="font-weight: bold;">{{accountSelected?.username}}</span>
+                            </div><br>
+                            <div class="col-md-12">
+                                <span>Role : </span>&nbsp;
+                                <span style="font-weight: bold;">{{accountSelected?.roles[0].name}}</span>
+                            </div><br><br>
+                            <div class="col-md-12">
+                                <form [formGroup]="editAccountForm" (ngSubmit)="editpassword()">
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label for="password" class="mb-2">New Password</label>
+                                            <input type="password" class="form-control" name="password" id="password"
+                                                formControlName="password">
+                                            <div *ngIf="password.invalid && (password.touched || password.dirty)"
+                                                class="text text-danger">
+                                                <div *ngIf="password.errors?.required">
+                                                    The password is required.
+                                                </div>
+                                            </div>
+                                        </div><br><br>
+                                        <div class="col-md-12">
+                                            <label for="confirmpassword" class="mb-2">Confirm password</label>
+                                            <input type="password" class="form-control"
+                                                formControlName="confirmPassword" id="confirmPassword"
+                                                name="confirmPassword">
+                                        </div>
+                                    </div><br>
+                                    <div class="col-md-12">
+                                        <p-button label="save" icon="pi pi-save" styleClass="p-button-sm" style="float: right;" class="m-1"
+                                        type="Submit"></p-button>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </p-dialog>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

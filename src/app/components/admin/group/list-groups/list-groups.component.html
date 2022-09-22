@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="col-md-12" style="text-align: center;">
+        <h3>Groups managment</h3>
+    </div>
+</div><br>
+<!-- Confirmation dialogue -->
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+    <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4"></div>
+          <div class="col-md-4" style="text-align: right;">
+            <p-button label="Add" icon="pi pi-plus" styleClass="p-button-sm" routerLink="/admin/groups/add" ></p-button>
+            <!-- [loading]="isLoading" -->
+          </div>
+    </div>
+<br>
+<div *ngIf="!show" class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+        <span align="center !important" class="sr-only" id="loading"></span>
+    </div>
+</div>
+    <div class="row">
+        <div class="col-md-12">
+            <p-toast></p-toast>
+            <p-toast position="top-right" key="tl"></p-toast>
+            <p-table [value]="listGroups" styleClass="p-datatable-striped p-datatable-sm" styleClass="myTable"
+                [rowHover]="true" [rows]="10" #dt1 [lazy]="false" editMode="row" dataKey="id"
+                [globalFilterFields]="['designation','shift', 'leaderName', 'ingenieur.nom']">
+
+                <ng-template pTemplate="caption">
+
+                    <div class="flex-end" style="text-align: right;">
+                        <!-- <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button> -->
+                        <span class="p-input-icon-right ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" #textInput
+                                (input)="dt1.filterGlobal(textInput.value, 'startsWith')"
+                                placeholder="Search keyword" />
+                            <!-- (input)="applyFilterGlobal($event, 'contains')"  (input)="dt1.filterGlobal(textInput.value, 'startsWith')"-->
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Designation</th>
+                        <th>Shift</th>
+                        <th>Leader</th>
+                        <th>Supervisor</th>
+                        <th>Technical expert</th>
+                        <th style="width: 18%; text-align: center;">Action</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-group>
+                    <tr>
+                        <td>{{group.designation}}</td>
+                        <td>{{group.shift}}</td>   
+                        <td>{{group?.leaderName}}</td>
+                        <td>{{group.ingenieur.nom}}</td>
+                        <td>{{group.technicalExpert.nom}}</td>
+                        <td>
+                            <button pButton pRipple type="button" icon="pi pi-pencil"
+                            class="p-button-rounded p-button-warning p-button-text"
+                            (click)="onEditGroup(group)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded p-button-warning p-button-text"
+                            (click)="consultGroup(group)"  style="color: rgb(0, 204, 255);"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-warning p-button-text"
+                            (click)="deleteGroup(group)"  style="color: red;"></button>
+                        </td>
+                    </tr>
+
+                </ng-template>
+
+            </p-table>
+
+        </div>
+
+
+    </div>

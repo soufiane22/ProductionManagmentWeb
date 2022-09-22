@@ -1,0 +1,95 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <h3> Users Managment</h3>
+        </div>
+    </div>
+
+    <div class="card" style="padding: 10px;">
+        <div class="row">
+            <div class="col-md-4">
+                <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4" style="text-align: right;">
+                <p-button label="Add" icon="pi pi-plus" styleClass="p-button-sm" routerLink="/admin/users/add">
+                </p-button>
+
+            </div>
+        </div>
+
+        <div *ngIf="!show" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span align="center !important" class="sr-only" id="loading"></span>
+            </div>
+        </div>
+        <br>
+        <p-toast position="top-right" key="tl"></p-toast>
+        <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+        <div class="row">
+            <div class="col-md-12">
+                <p-table [value]="listUsers" styleClass="p-datatable-striped p-datatable-sm" styleClass="myTable"
+                  [rowHover]="true" [rows]="10" #dt1 [lazy]="false" editMode="row" dataKey="id"   [paginator]="true" 
+                  [globalFilterFields]="['matricule','nom', 'prenom', 'fonction','line.designation']" (onFilter)="onFilter($event, dt1)" >
+                  <ng-template pTemplate="caption">
+                    <div class="row">
+                        <div class="col-md-4" style="text-align: left;">
+                      <span>Total : {{totalEmployeese}}</span>
+                  </div>
+                  <div class="col-md-4">
+
+                  </div>
+                    <div class="col-md-4"  class="flex-end" style="text-align: right;">
+                        <span class="p-input-icon-right ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" #textInput
+                                (input)="dt1.filterGlobal(textInput.value, 'startsWith')"
+                                placeholder="Search keyword" />
+                        </span>
+                    </div>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Register Number</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Function</th>
+                        <th style="width: 13%;">Line</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                     
+                        <th style="width: 12%">Action</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-user>
+                    <tr>
+                        <td>{{user.matricule}}</td>
+                        <td>{{user.nom}}</td>
+                        <td>{{user.prenom}}</td>
+                        <td>{{user.fonction}}</td>
+                        <td *ngIf="user.line">{{user.line.designation}}</td>
+                        <td *ngIf="!user.line">null</td>
+                        <td *ngIf="user.tele">{{user.tele}}</td>
+                        <td *ngIf="!user.tele" style="text-align: center;">null</td>
+                        <td *ngIf="user.email">{{user.email}}</td>
+                        <td *ngIf="!user.email" style="text-align: center;">null</td>
+                        <td>
+                            <button pButton pRipple type="button" icon="pi pi-pencil"
+                                class="p-button-rounded p-button-warning p-button-text"
+                                (click)="onEditUser(user)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash"
+                                class="p-button-rounded p-button-warning p-button-text"
+                                (click)="deleteUser(user)" style="color: red;"></button>
+                        </td>
+                    </tr>
+
+                </ng-template>
+
+                </p-table>
+             </div>
+        </div>
+    </div>
+ </div>

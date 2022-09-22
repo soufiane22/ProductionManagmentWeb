@@ -22,7 +22,7 @@ const routes: Routes = [
     loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule),
     canActivate:[AuthGuard],
     data:{
-      role:'ROLE_CONTROLER'
+      roles:['ROLE_CONTROLER','ROLE_ADMIN']
     }
   },
   {
@@ -35,12 +35,10 @@ const routes: Routes = [
   },
  
 
- 
-
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes)],
+  imports: [ RouterModule.forRoot(routes , {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

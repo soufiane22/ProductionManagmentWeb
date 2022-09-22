@@ -1,0 +1,207 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <h3 *ngIf="!modeUpdate">Add new Group</h3>
+            <h3 *ngIf="modeUpdate">Update Group</h3>
+        </div>
+    </div>
+   
+    <div class="row">
+        <div class="col-md-3">
+            <p>Designation</p>
+            <input class="form-control" [(ngModel)]="group.designation" placeholder="designation" name="designation" id="designation"
+                style="width: 250px;" type="text" required [disabled]="modeVue" >
+        </div>
+        <div class="col-md-3">
+            <p>shift</p>
+            <!--  (change)="genre()" -->
+            <select class="form-select" [(ngModel)]="selectedShift" id="shift" name="shift" style="width: 250px;"   >
+                <option [disabled]="modeVue" [value]="op.id" *ngFor="let op of options">{{op.name}}</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <p>Leader</p>
+            <select class="form-select" #leader [(ngModel)]="selectedLeader" id="leader" name="leader"  [compareWith]="compare"
+                style="width: 250px;" *ngIf="!modeUpdate">
+                <option [ngValue]="leader" *ngFor="let leader of leaders">{{leader.nom}} {{leader.prenom}}</option>
+            </select>
+            <span *ngIf="modeUpdate || modeVue"> {{selectedLeader.nom}}  {{selectedLeader.prenom}} </span>
+        </div>
+        <div class="col-md-3">
+            <p>Supervisor </p>
+            <select class="form-select" [(ngModel)]="selectedSupervisor" id="supervisor" name="supervisor"  [compareWith]="compare"
+                style="width: 250px;">
+                <option [disabled]="modeVue" [ngValue]="supervisor" *ngFor="let supervisor of supervisors">{{supervisor.nom}} 
+                    {{supervisor.prenom}}</option>
+            </select>
+        </div>
+    </div>
+    <br>
+
+ 
+    
+    <div class="row">
+        <div class="col-md-3">
+            <p>Technical expert </p>
+            <select class="form-select" [(ngModel)]="selectedTechnical" id="technical" name="technical"  [compareWith]="compare"
+                style="width: 250px;">
+                <option [disabled]="modeVue" [ngValue]="technical" *ngFor="let technical of technicals">{{technical.nom}}
+                    {{technical.prenom}}</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <p>Zone </p>
+            <select class="form-select" [(ngModel)]="selectedZone" id="zone" name="zone"  
+                style="width: 250px;">
+               <option [disabled]="modeVue" value="RFID">RFID</option>
+               <option [disabled]="modeVue" value="IC-EMC">IC-EMC</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <p>Group password</p>
+            <input class="form-control" [(ngModel)]="group.passwordGroup" placeholder="Group password" name="passwordGroup" id="passwordGroup"
+            style="width: 250px;" type="text" required [disabled]="modeVue">
+        </div>
+        <div class="col-md-6">
+        
+        </div>
+        
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <p>Lines </p>
+            <!--   optionValue="designation"  [selectionLimit]=5  [panelStyle]="{minWidth:'20em',maxWidth:'25em'}"-->
+            <p-multiSelect [options]="lines" [(ngModel)]="selectedLines" optionLabel="designation"
+                defaultLabel="Select Lines" optionDisabled="modeVue" *ngIf="!modeVue"
+                [maxSelectedLabels]=2 display="chip" 
+                [selectedItemsLabel]="'{0} Lines selected'">
+            </p-multiSelect>
+            <ul *ngIf="modeVue">
+                <li *ngFor="let line of selectedLines">{{line.designation}}</li>
+            </ul>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-info" [disabled]="modeVue"
+                (click)="onUserModal(usermodal)" style="float: right;" styleClass="p-button-sm"></button>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <p-table [value]="selectedemployeeses" scrollHeight="300px" [virtualScroll]="true" dataKey="id" *ngIf="visible"
+                 #dt4  [globalFilterFields]="['matricule','nom', 'prenom','fonction']" styleClass="p-datatable-striped p-datatable-sm">
+                 <ng-template pTemplate="caption">
+                    <div class="flex-start" style="text-align: ledt;float: left;">
+                        Sum Employees : {{selectedemployeeses.length}}
+                    </div>
+                    <div class="flex-end" style="text-align: right;">
+                        <!-- <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button> -->
+                        <span class="p-input-icon-right ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" #textInput (input)="dt4.filterGlobal(textInput.value, 'startsWith')"
+                                placeholder="Search keyword" />
+                            <!-- (input)="applyFilterGlobal($event, 'contains')"  (input)="dt1.filterGlobal(textInput.value, 'startsWith')"-->
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th scope="col">Register Number</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Function</th>
+                        <th scope="col" *ngIf="!modeVue">Delete</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-emp>
+                    <!-- | async; index as i -->
+                    <tr> 
+                        <td>{{emp.matricule}} </td>
+                        <td>{{emp.nom}}</td>
+                        <td>{{emp.prenom}}</td>
+                        <td>{{emp.fonction}}</td>
+                        <td *ngIf="!modeVue">
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteEmployee(emp)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    
+    <div class="row mt-2">
+        <div class="col-md-12" style="text-align: right;">
+            <!-- s -->
+            <button label="save" icon="pi pi-save" styleClass="p-button-sm" pButton [disabled]="modeVue"
+                 (click)="save_group()"></button>
+        </div>
+    </div>
+    <br>
+
+
+
+</div>
+<p-toast position="top-right" key="tl"></p-toast>
+
+    <!------------------ Modale users ------------------->
+<ng-template #usermodal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add Employees To Group</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <p-table [value]="employeeses" [(selection)]="selectedRows" scrollHeight="350px" [virtualScroll]="true" dataKey="id"
+                 #dt3  [globalFilterFields]="['matricule','nom', 'prenom','fonction']">
+                <ng-template pTemplate="caption">
+
+                    <div class="flex-end" style="text-align: right;">
+                        <!-- <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button> -->
+                        <span class="p-input-icon-right ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" #textInput (input)="dt3.filterGlobal(textInput.value, 'startsWith')"
+                                placeholder="Search keyword" />
+                            <!-- (input)="applyFilterGlobal($event, 'contains')"  (input)="dt1.filterGlobal(textInput.value, 'startsWith')"-->
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th>
+                        </th>
+                        <th>Register Number</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Function</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-employee>
+                    <tr [pSelectableRow]="employee">
+                        <td>
+                            <p-tableCheckbox [value]="employee"></p-tableCheckbox>
+
+                        </td>
+                        <td> {{employee.matricule}}</td>
+                        <td> {{employee.nom}}</td>
+                        <td> {{employee.prenom}}</td>
+                        <td> {{employee.fonction}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <p-button label="Add" icon="pi pi-plus" styleClass="p-button-sm" 
+                    style="float: right;" (click)="addemployees()" (click)="modal.dismiss('Cross click')" (click)="updateVisibility()">
+                </p-button>
+               
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-template>

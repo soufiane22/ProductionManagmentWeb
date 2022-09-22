@@ -31,5 +31,22 @@ export class UserAuthService {
     return this.getToken() != null;
   }
 
+  public setUserName(username){
+    localStorage.setItem("userfullname",username);
+  }
+
+  public getUserName():string{
+    return localStorage.getItem("userfullname");
+  }
+
+  public setFunction(Function){
+    localStorage.setItem("function",Function);
+  }
+
+  public getFunction():string{
+    return localStorage.getItem("function");
+  }
+
+
  
 }

@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
 import { BreakpointObserver } from '@angular/cdk/layout'
 import { Router } from '@angular/router';
 import { UserAuthService } from 'src/app/shared/services/user-auth.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,8 +11,10 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
-  @ViewChild(MatSidenav)
-  sidenav! : MatSidenav
+ user_conected
+ fonction
+ role
+  sidenav
   menuItems =["home", "presence","groupe"]
   constructor(private observer:BreakpointObserver ,
               public router:Router , 
@@ -23,6 +25,12 @@ export class NavBarComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.user_conected = this.userAutService.getUserName();
+    this.fonction = this.userAutService.getFunction();
+    this.role = this.userAutService.getRoles();
+    console.log("role ",this.role);
+    
+    this.openNav();
     
   }
 
@@ -35,24 +43,21 @@ export class NavBarComponent implements OnInit {
     this.router.navigate(["/login"]);
   }
 
-  ngAfterViewInit(){
-
-    this.observer.observe([]).subscribe(
-      res=>{
-        if(res.matches){
-          this.sidenav.mode = 'side';
-          this.sidenav.close();
-        }else{
-          this.sidenav.mode = "side";
-          this.sidenav.open();
-        }
-      }
-    );
+   openNav() {
+    document.getElementById("mySidenav").style.width = "200px";
+    document.getElementById("main").style.marginLeft = "200px";
   }
 
-  close(){
-    this.sidenav.close();
+   closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
   }
+
+
+
+  
+
+
 
 
 

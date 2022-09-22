@@ -1,11 +1,23 @@
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>$(document).ready(function(){
+        $('ul li').click(function(e) 
+    { 
+        $("div ul li.active").removeClass("active");
+    });
+});
+</script>
 
-<nav class="navbar navbar-expand-lg " style=" background-color:rgb(143, 143, 143) ;">
+<nav class="navbar navbar-expand-lg " style=" background-color:rgb(143, 143, 143) ; height: 50px;">
   <div class="container-fluid">
-    <a mat-icon-button *ngIf="sidenav.mode === 'side'" (click)="sidenav.toggle()" style="color:white;">
-      <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
-      <mat-icon *ngIf="sidenav.opened">close</mat-icon>
-    </a>
+   
+      <!-- <button class="btn btn-danger" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+        <i class="fa-solid fa-bars"></i>
+        <fa-icon [icon]="['fas','bars']"></fa-icon>
+      </button> -->
+
+      <span style="font-size:25px;cursor:pointer" (click)="openNav()">&#9776; </span>
+    
   <span class="navbar-brand" >
     
     <!-- <img src="../../../../assets/images/logo.png" style="width: 80px; height:50px"> -->
@@ -14,70 +26,75 @@
   <div fxFlex fxLayoutAlign="flex-end center">
        <button type="button" class="btn btn-danger" (click)="logout()">Logout</button>
    </div>
- 
-
-     
-        <!-- <button class="btn btn-outline-danger  text-right" (click)="logout()" >Logout</button> -->
-    
   </div>
 </nav>
 
+<div id="mySidenav" class="sidenav">
+  <div class="navHeader">
+      <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+       <h6 class="offcanvas-title" style="text-align: center; margin-bottom: 3px;">{{user_conected}}</h6> 
+        <span style="text-align: center; margin-bottom: 10px; font-size: small;">{{fonction}}</span>
+  </div>
 
-<mat-sidenav-container>
-
-  <mat-sidenav mode="side" opened="true" #sidenav="matSidenav">
-
-    <div class="user">
-           <h4 class="name">Najim Beniss</h4>
-           <p class="designation">Production controler</p>
-    </div>
- 
-    <mat-divider></mat-divider>
-    <ul class="nav">
-        <li mat-button routerLink="home" routerLinkActive="active" class="nav-item">
-          <a class="nav-link"  style="color:white">
-              <mat-icon style="vertical-align:middle;">home</mat-icon>&nbsp;
-            <span >Home</span>
-          </a>
-          
-        </li>
-        <li mat-button routerLink="/admin/notification-hours" routerLinkActive="active" class="nav-item">
-          <a class="nav-link"  style="color:white">
-              <mat-icon style="vertical-align:middle;">notifications_active</mat-icon>&nbsp;
-              <span >Hours Notifications</span>
-          </a>
-        </li>
-
-        <li mat-button routerLink="/admin/presence" routerLinkActive="active" class="nav-item">
-          <a class="nav-link" routerLink="home" style="color:white">
-              <mat-icon style="vertical-align:middle;">person_pin</mat-icon>&nbsp;
-              <span >Presence</span>
-          </a>
-        </li>
-        <li mat-button routerLink="/home" routerLinkActive="active" class="nav-item">
-          <a class="nav-link" routerLink="home" style="color:white">
-              <mat-icon style="vertical-align:middle;">group</mat-icon>&nbsp;
-              <span >Groups</span>
-          </a>
-        </li>
-     
-    
-    </ul>
-    <mat-divider></mat-divider>
-    <ul class="nav">
-    <li mat-button routerLink="/home" routerLinkActive="active" class="nav-item">
-      <a class="nav-link" routerLink="home" style="color:white">
-          <mat-icon style="vertical-align:middle;">exit_to_app</mat-icon>&nbsp;
-          <span >Logout</span>
+  <ul class="navbar-nav">
+    <li  routerLink="home" routerLinkActive="active" class="nav-item">
+      <a class="nav-link active"  style="color:white" data-toggle="tab" role="tab" aria-controls="v-pills-home" id="v-pills-home-tab">
+          <fa-icon [icon]="['fas','home']"></fa-icon>&nbsp;
+          <span >Home</span>
       </a>
     </li>
-    </ul>
+    <li  routerLink="/admin/notification-hours" routerLinkActive="active" class="nav-item">
+      <a class="nav-link"  style="color:white">
+        <fa-icon [icon]="['fas','bell']"></fa-icon>&nbsp;
+          <span >Hours Notifications</span>
+      </a>
+    </li>
+    <li  routerLink="/admin/presence" routerLinkActive="active" class="nav-item">
+      <a class="nav-link"  style="color:white">
+        <fa-icon [icon]="['fas','check']"></fa-icon>&nbsp;
+          <span >Presence</span>
+      </a>
+    </li>
+    <li  routerLink="/admin/accounts" routerLinkActive="active" class="nav-item"  *ngIf="role == 'ROLE_ADMIN'">
+      <a class="nav-link"  style="color:white">
+        <fa-icon [icon]="['fas','file-invoice']"></fa-icon>&nbsp;
+          <span >Users Manager</span>
+      </a>
+    </li>
+    <li  routerLink="/admin/groups" routerLinkActive="active" class="nav-item" *ngIf="role == 'ROLE_ADMIN'">
+      <a class="nav-link"  style="color:white">
+        <fa-icon [icon]="['fas','user-group']"></fa-icon>&nbsp;
+          <span >Groups</span>
+      </a>
+    </li>
 
-  </mat-sidenav>
-  <mat-sidenav-content>
+    <li routerLinkActive="active" routerLink="/admin/products"  class="nav-item"  *ngIf="role == 'ROLE_ADMIN'">
+      <a class="nav-link"  style="color:white">
+        <fa-icon [icon]="['fas','box']"></fa-icon>&nbsp;
+          <span >Lines & Products</span>
+      </a>
+    </li>
 
-          <router-outlet></router-outlet>
+    <li routerLinkActive="active" routerLink="/admin/users"  class="nav-item"  *ngIf="role == 'ROLE_ADMIN'">
+      <a class="nav-link"  style="color:white">
+        <fa-icon [icon]="['fas','user']"></fa-icon>&nbsp;
+          <span >Users</span>
+      </a>
+    </li>
+ 
+    <!-- <li mat-button routerLinkActive="active" class="nav-item">
+      <a class="nav-link" style="color:white"  (click)="logout()">
+          <span >Logout</span>
+      </a>
+    </li> -->
+  </ul>
+</div>
 
 
-  </mat-sidenav-content>
-</mat-sidenav-container> 
+  
+
+
+  <div class="content" id="main">
+         <router-outlet></router-outlet>
+  </div>
+ 

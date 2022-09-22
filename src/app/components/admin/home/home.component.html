@@ -1,1 +1,247 @@
-<p>home works!</p>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-xl-4 col-md-6 xl-50">
+            <div class="card o-hidden  widget-cards">
+                <div class="bg-secondary card-body">
+                    <div class="media static-top-widget row">
+                        <div class="icons-widgets col-4">
+                            <div class="align-self-center text-center">
+                                <!-- <app-feather-icons [icon]="'box'" class="font-secondary"></app-feather-icons> -->
+                                <!-- <fa-icon  class="font-secondary" [icon]="['fas','user']" ></fa-icon> -->
+                                <i class="pi pi-users icon"></i>
+                            </div>
+                        </div>
+                        <div class="media-body col-8"><span class="m-0">Total Employees</span>
+                            <h3 class="mb-0">
+                                <span class="counter" [CountTo]="statistics?.totalEmployees" [from]="0"
+                                    [duration]="2">{{statistics?.totalEmployees}}</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6 xl-50">
+            <div class="card o-hidden  widget-cards">
+                <div class="bg-primary card-body">
+                    <div class="media static-top-widget row">
+                        <div class="icons-widgets col-6">
+                            <div class="align-self-center text-center">
+
+                                <fa-icon class="font-secondary" [icon]="['fas','gears']" style="font-size: 2rem;">
+                                </fa-icon>
+                            </div>
+                        </div>
+                        <div class="media-body col-6"><span class="m-0">Total Lines</span>
+                            <h3 class="mb-0">
+                                <span class="counter" [CountTo]="statistics?.totalLines" [from]="0"
+                                    [duration]="2">{{statistics?.totalLines}}</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6 xl-50">
+            <div class="card o-hidden  widget-cards">
+                <div class="bg-danger card-body">
+                    <div class="media static-top-widget row">
+                        <div class="icons-widgets col-6">
+                            <div class="align-self-center text-center">
+
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                        </div>
+                        <div class="media-body col-6"><span class="m-0">Total Product</span>
+                            <h3 class="mb-0">
+                                <span class="counter" [CountTo]="statistics?.totalProduct" [from]="0"
+                                    [duration]="2">{{statistics?.totalProduct}}</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <p-toast position="top-right" key="tl"></p-toast>
+    <div *ngIf="!show" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span align="center !important" class="sr-only" id="loading"></span>
+        </div>
+    </div>
+
+    <!--  Statistics Month -->
+    <div class="row">
+        <p-card>
+            <ng-template pTemplate="header" style="padding: 10px;">
+                <h5 style="padding: 10px; text-align: center;" >Production Report Overview</h5>
+            
+                <div class="row justify-content-center">
+                    
+                        <div class="col-md-3 ">
+                            <label appCalloutDirective>Line</label>
+                            <select class="form-select" [(ngModel)]="selectedLine" id="line" name="line"
+                                (change)="getByLine($event.target)">
+                                <option [ngValue]="line" *ngFor="let line of lines">{{line.designation}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Reference</label>
+                            <select class="form-select" [(ngModel)]="selectedProduct" id="produit" name="produit"
+                                (change)="getByReference()">
+                                <option [ngValue]="ref" *ngFor="let ref of products">{{ ref.reference }}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Date</label>
+                            <select class="form-select" [(ngModel)]="selectedDate" id="date" name="date"
+                                (change)="getByDate()">
+                                <option [ngValue]="date" *ngFor="let date of dates">{{ date.monthYear }}</option>
+                            </select>
+                        </div>
+                    </div>
+            
+            </ng-template>
+            <div class="row">
+                <div style="width:3000px; overflow:auto;" class="table-responsive table-height">
+                    <!-- class="table table-striped table-sm" cellspacing="1" cellpadding="1"  table-layout: fixed  table-striped-->
+                    <table  style="width:100%; table-layout: fixed" class="table table-hover table-sticky   ">
+                        <thead>
+                            <tr>
+                                <td style="width:100px ; text-align: center;  padding:0 0 25px 0;">Line / Ref</td>
+                                <th  *ngFor="let column of columns;index as i" colspan="7" style="border: solid 1px white; width:400px">{{column}} 
+                        
+                                    <table class="table" >
+                                        <tr class="table_row">
+                                            <th class="header_item" scope="col"style=" width:17%" > output</th>
+                                            <th class="header_item" scope="col">scrap</th>
+                                            <th class="header_item"  scope="col"  style=" width:15%">scrap %</th>
+                                            <th class="header_item" scope="col">Toatal Hours</th>
+                                            <th class="header_item" scope="col">NVAH</th>
+                                            <th class="header_item" scope="col">Standar Hour</th>
+                                            <th class="header_item" scope="col"  style=" width:17%">Prod</th>
+    
+                                        </tr>
+                                    </table>
+                                
+                                </th>
+                                 
+                            </tr>
+                 
+                        </thead>
+                 
+                            <tbody>
+                              
+                                <tr *ngFor="let st of listStatisticsMonth" [ngStyle]="{'background-color': (st.line=='') ? 'rgb(252, 161, 161)' : '#ffffff'}" id="firstLine">
+                                    <td class="table_data" scope="row" style="border-right: 1px solid rgb(255, 128, 128);">{{st.line}}</td>
+                         
+                                    <td *ngFor="let c of st.listStatistics" colspan="7" >
+                                     <!-- class="table table-bordered table-striped table-hover" -->
+                                            <table class="table1">
+                                                <tr>
+                                                    <td class="table_data" style=" width:17%">{{c.output}}</td>
+                                                    <td class="table_data">{{c.scrap}}</td>
+                                                    <td class="table_data" style=" width:15%">{{c.tauxScrap}}%</td>
+                                                    <td class="table_data">{{c.totalHours}}</td>
+                                                    <td class="table_data">{{c.nvah}}</td>
+                                                    <td class="table_data">{{c.standardHours}}</td>
+                                                    <td class="table_data" style=" width:17%">{{c.productivity}}%</td>
+                                                </tr> 
+                                            </table>
+                                  
+                                   
+                                </td>
+                      
+                                </tr>
+                               
+                            </tbody>
+                     
+                     
+
+                    </table>
+                </div>
+
+            </div>
+        </p-card>
+    </div>
+    <br>
+    <div class="row">
+        <div class="card"  style="padding: 30px;">
+            <h5 style="text-align: center;color: black;">Productivty Repport Graph-Plan</h5>
+            <span *ngIf="selectedLine?.designation != 'All'" style="text-align: center;color: black;">{{selectedLine.designation}}</span>
+            <br>
+            <p-chart type="line" [data]="basicData" [options]="basicOptions"></p-chart>
+        </div>
+    </div>
+    <br>
+    <!-- 
+
+       <div class="row">
+        <p-card>
+            <ng-template pTemplate="header" style="padding: 10px;">
+                <h5 style="padding: 10px; text-align: center;">Productivity Statistics</h5>
+                <div class="row" style="padding: 10px;">
+                    <div class="col-md-2">
+                        <select class="form-select" name="option" [(ngModel)]="selectedOption">
+                            <option [value]="op.id" *ngFor="let op of options">{{op.name}}</option>
+
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Start Date" name="dp" ngbDatepicker
+                                #d="ngbDatepicker" (dateSelect)="onStarDateSelection($event)">
+                            <button class="btn btn-outline-secondary bi bi-calendar" (click)="d.toggle()"
+                                type="button"></button>
+                     
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="End Date" name="dp1" ngbDatepicker
+                                #d1="ngbDatepicker" (dateSelect)="onEndDateSelection($event)">
+                            <button class="btn btn-outline-secondary bi bi-calendar" (click)="d1.toggle()"
+                                type="button"></button>
+                    >
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" [(ngModel)]="selectedLine" id="line" name="line"
+                            *ngIf="selectedOption=='line'">
+                            <option [ngValue]="line" *ngFor="let line of lines">{{line.designation}}</option>
+                        </select>
+                        <select class="form-select" [(ngModel)]="selectedProduct" id="product" name="product"
+                            *ngIf="selectedOption=='reference'">
+                            <option [ngValue]="product" *ngFor="let product of products">{{product.reference}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-1">
+                        <a (click)="search()" style="color: rgb(223, 6, 6); float: left;">
+                            <fa-icon class="font-secondary" [icon]="['fas','magnifying-glass']"
+                                style="font-size: 1.5rem; margin-bottom: 10px;"></fa-icon>
+                        </a>
+
+                    </div>
+                </div>
+            </ng-template>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <p-chart type="bar" [data]="basicData" [options]="basicOptions" height="90vh" [responsive]="true">
+                    </p-chart>
+
+
+                </div>
+            </div>
+
+        </p-card>
+    </div>  
+     -->
+
+</div>

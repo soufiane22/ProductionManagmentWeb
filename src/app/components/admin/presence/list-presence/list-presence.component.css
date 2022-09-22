@@ -1,0 +1,16 @@
+.status{
+    color: white;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+#outer{
+    width:100%;
+
+}
+.inner
+{
+    display: inline-block;
+
+}

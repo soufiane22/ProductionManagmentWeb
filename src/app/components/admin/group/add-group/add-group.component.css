@@ -1,0 +1,10 @@
+
+:host ::ng-deep  .p-multiselect .p-multiselect-trigger{
+    width: 9rem;
+   
+}
+
+:host ::ng-deep .p-multiselect-trigger-icon{
+    float: right;
+    text-align: right;
+}

@@ -13,14 +13,27 @@ export class AuthInterceptor implements  HttpInterceptor{
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
      //throw new Error("Method not implemented.");
-        console.log("request====>",req);
+        // console.log("request====>",req);
         const token  = this.userAuthService.getToken();
-        console.log("token====>",token);
-        let jwtToken = req.clone({headers:req.headers.set('Authorization',token).set('Content-Type', 'application/json').
+    
+        let request = req.clone({headers:req.headers.set('Authorization',token).set('Content-Type', 'application/json').
         set('X-Requested-With','XMLHttpRequest')})
 
-       return next.handle(jwtToken)
-        req = this.addToken(req, token);
+       return next.handle(request).pipe(
+        catchError(
+                    (err:HttpErrorResponse) => {
+                         console.log(err);
+                         if(err.status === 403){
+                             this.router.navigate(['/login'])
+                           this.userAuthService.clear()
+                           return throwError("your token has expired oryou don't have the authority") 
+                         }
+                         return throwError(err)
+                        
+                    }
+                )
+       )
+ 
 
 
         // return next.handle(req).pipe(

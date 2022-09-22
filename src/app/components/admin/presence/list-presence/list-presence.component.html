@@ -1,1 +1,292 @@
-<p>list-presence works!</p>
+<div class="col-md-12">
+    <h3 class="text-center">Tracking Presence</h3>
+</div>
+
+<div *ngIf="!show" class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+        <span align="center !important" class="sr-only" id="loading"></span>
+    </div>
+</div>
+
+
+
+   <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+    
+    <li [ngbNavItem]="1">
+        <a ngbNavLink style="color: rgba(224, 7, 7, 0.836);"> Group presence</a>
+        <ng-template ngbNavContent>
+            <div class="row" >
+                <div class="col-md-4">
+            
+                </div>
+            
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <form class="row row-cols-sm-auto" style="float: right;">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #da="ngbDatepicker"
+                                    [value]="formatter.format(fromDate)" (dateSelect)="onDateSelection($event)">
+                                <button class="btn btn-outline-secondary bi bi-calendar" (click)="da.toggle()"
+                                    type="button"></button>
+                                <!-- <i class="bi bi-calendar"></i> -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><br>
+            <div class="row">
+              
+                <p-toast position="top-right" key="tl"></p-toast>
+                <p-toast></p-toast>
+                <p-table [value]="listPresencesGroup" dataKey="id" 
+                    styleClass="p-datatable-striped p-datatable-sm" #dt2 [globalFilterFields]="['group','leaderName', 'shift']"
+                    editMode="row" dataKey="id" [rows]="3" [paginator]="true" >
+            
+                    <ng-template pTemplate="caption">
+                        <div class="flex-end" style="text-align: right;">
+                            <!-- <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button> -->
+                            <span class="p-input-icon-right ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" #textInput (input)="dt2.filterGlobal(textInput.value, 'startsWith')"
+                                    placeholder="Search keyword" />
+                                <!-- (input)="applyFilterGlobal($event, 'contains')"  (input)="dt1.filterGlobal(textInput.value, 'startsWith')"-->
+                            </span>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 1rem"></th>
+                            <th pSortableColumn="group">Group <p-sortIcon field="group"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="leaderName" style="width: 15%">Leader Name <p-sortIcon field="leaderName">
+                                </p-sortIcon>
+                            </th>
+                            <th>Date </th>
+                            <th pSortableColumn="rating">Shift <p-sortIcon field="Shift"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="inventoryStatus">Engineer </th>
+                            <th pSortableColumn="inventoryStatus">Total Operators </th>
+                            <th pSortableColumn="inventoryStatus">Sum Hours </th>
+                            <th style="width: 13%">Status</th>
+                            <th style="width: 12%">Action</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-presenceG let-expanded="expanded" let-ri="rowIndex" let-editing="editing">
+                        <tr [pEditableRow]="presenceG">
+                            <td>
+                                <button type="button" pButton pRipple [pRowToggler]="presenceG"
+                                    class="p-button-text p-button-rounded p-button-plain"
+                                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                            </td>
+                            <td>{{presenceG.group}}</td>
+                            <td>{{presenceG.leaderName}}</td>
+                            <td>{{presenceG.date}}</td>
+                            <td>{{presenceG.shift}}</td>
+                            <td>{{presenceG.engineer}}</td>
+                            <td style="text-align: center;">{{presenceG.totalOperators}}</td>
+                            <td style="text-align: center;">{{presenceG.sumHours}}</td>
+                            <td>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <p-dropdown [options]="statuses" [(ngModel)]="presenceG.status"></p-dropdown>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        <div [ngStyle]="{backgroundColor :presenceG?.status==='Validate'? '#23b723' : '#fda400'}"
+                                            class="status">
+                                            {{presenceG?.status}}
+                                        </div>
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td>
+                                <div id="outer">
+                                    <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                                        (click)="onRowEditInit(presenceG)" class="p-button-rounded p-button-text inner"
+                                        data-inline="true"></button>
+                                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                                        (click)="onRowEditSave(presenceG)"
+                                        class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                                        (click)="onRowEditCancel(presenceG, ri)"
+                                        class="p-button-rounded p-button-text p-button-danger"></button>
+                                </div>
+            
+                            </td>
+                            <!-- [readonly]="true" [cancel]="false" -->
+            
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="rowexpansion" let-presenceG>
+                        <tr>
+                            <td></td>
+                            <td colspan="8">
+                        <div class="p-2">
+                          <p-table [value]="presenceG.listPresence" dataKey="id">
+                        <ng-template pTemplate="header">
+                           <tr>
+                            <th pSortableColumn="matriculePerson">Registration Number <p-sortIcon field="matriculePerson">
+                                </p-sortIcon>
+                            </th>
+                            <th pSortableColumn="nomPerson">Last Name <p-sortIcon field="nomPerson"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="prenomPerson">First Name <p-sortIcon field="prenomPerson"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="functionPerson">Function <p-sortIcon field="functionPerson"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="line">Line <p-sortIcon field="line"></p-sortIcon>
+                            </th>
+                            <th>State </th>
+                            <th>Hours </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-presence>
+                        <tr>
+                            <td>{{presence.matriculePerson}}</td>
+                            <td>{{presence.nomPerson}}</td>
+                            <td>{{presence.prenomPerson}}</td>
+                            <td>{{presence.functionPerson}}</td>
+                            <td>{{presence.line.designation}}</td>
+                            <td>{{presence.etat}}</td>
+                            <td>{{presence.nbrHeurs}}</td>
+                        </tr>
+                    </ng-template>
+            
+                </p-table>
+            </div>
+            </td>
+            </tr>
+            </ng-template>
+            </p-table>
+            
+            </div>
+
+          </ng-template>
+    </li>
+
+    <!-- ***************  individual presence tab   ********* -->
+    <li [ngbNavItem]="2">
+        <a ngbNavLink style="color: rgba(224, 7, 7, 0.836);">Individual presence </a>
+        <ng-template ngbNavContent>
+            <p-toast position="top-right" key="t2"></p-toast>
+            <div class="row">
+                <div class="col-md-3 mt-2">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Start Date" name="dp" ngbDatepicker #d="ngbDatepicker"
+                            (dateSelect)="onStarDateSelection($event)"   [value]="formatter.format(fromDate)">
+                        <button class="btn btn-outline-secondary bi bi-calendar" (click)="d.toggle()"
+                            type="button"></button>
+                        <!-- <i class="bi bi-calendar"></i> -->
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group mt-2">
+                        <input class="form-control" placeholder="End Date" name="dp1" ngbDatepicker #d1="ngbDatepicker"
+                            (dateSelect)="onEndDateSelection($event)">
+                        <button class="btn btn-outline-secondary bi bi-calendar" (click)="d1.toggle()"
+                            type="button"></button>
+                        <!-- <i class="bi bi-calendar"></i> -->
+                    </div>
+    
+                </div>
+                <div class="col-md-3">
+                     <!--   optionValue="designation" -->
+                     <p-multiSelect [options]="lines" [filter]="true"  optionLabel="designation" [(ngModel)]="selectedLine" optionValue="id"
+                         defaultLabel="Select line" id="line" name="line" [selectionLimit]=1 class="multiselect-custom" display="chip">
+                     </p-multiSelect>
+                      
+                </div>
+                <div class="col-md-1">
+                    <button pButton pRipple type="button" icon="pi pi-search" 
+                      class="p-button-rounded p-button-danger" (click)="filterByline()"></button>
+                      <!-- style="color: rgb(255, 255, 255); background-color: red; border: none;" -->
+                </div>
+                <div class="col-md-2" style="text-align: right;">
+                    <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
+                </div>
+    
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- [rowsPerPageOptions]="[10,25,50]" [lazy]="true"-->
+                    <p-table [value]="listIndividualPresence" styleClass="p-datatable-striped p-datatable-sm" [paginator]="true"  
+                    (onFilter)="onFilter($event, dt1)" [rowHover]="true" [rows]="10" #dt1  dataKey="id" 
+                    [globalFilterFields]="['date','nomPerson', 'prenomPerson', 'matriculePerson', 'functionPerson','etat','line.designation','leader.prenom',
+                    'leader.nom','shift','zone']" [rowsPerPageOptions]="[10,25,50]">
+                    <ng-template pTemplate="caption">
+                        <div class="row">
+                              <div class="col-md-6" style="text-align: left;">
+                            <span>Total : {{totalEmployeese}}</span>
+                        </div>
+                        <div class="col-md-6" style="text-align: right;">
+        
+                            <span class="p-input-icon-right ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" #textInput (input)="dt1.filterGlobal(textInput.value, 'startsWith')"
+                                    placeholder="Search keyword" />
+                            </span>
+                        </div>
+                        </div>
+                      
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 10%">Date</th>
+                            <th >Register Number</th>
+                            <th style="width: 10%">Last Name</th>
+                            <th >First Name</th>
+                            <th>Function</th>
+                            <th>Leader</th>
+                            <th>Technical Expert</th>
+                            <th>Supervisor</th>
+                            <th>Shift</th>
+                            <th style="width: 8%;">Zone</th>
+                            <th style="width: 10%;">Line</th>
+                            <th>Status</th>
+                            <th>Hours</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-presence let-ri="rowIndex" let-editing="editing">
+                        <tr>
+                            <td>{{presence.date}}</td>
+                            <td >{{presence.matriculePerson}}</td>
+                            <td>{{presence.nomPerson}}</td>
+                            <td>{{presence.prenomPerson}}</td>      
+                            <td>{{presence.functionPerson}}</td>
+                            <td>{{presence?.leader.nom}} {{presence?.leader.prenom}}</td>
+                            <td>{{presence?.technicalExpert.nom}}</td>
+                            <td>{{presence?.supervisor.nom}}</td>
+                          
+                            <td>{{presence.shift}}</td>
+                            <td>{{presence?.zone}}</td>
+                            <td>{{presence.line.designation}}</td>                     
+                            <td>{{presence.etat}}</td>
+                            <td>{{presence.nbrHeurs}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer" let-rowData>
+                        <tr>
+                            <td colspan="12" style="text-align:right">Sum</td>
+                            <td >{{totalHours.toFixed(2)}}</td>
+            
+                        </tr>
+            
+                    </ng-template>
+
+
+                    </p-table>
+                </div>
+            </div>
+        </ng-template>
+      </li>
+
+
+</ul> 
+
+
+
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+

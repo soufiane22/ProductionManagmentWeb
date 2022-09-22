@@ -1,0 +1,68 @@
+/* @import "/node_modules/primeng/resources/themes/lara-light-blue/theme.css"; 
+@import "/node_modules/primeng/resources/primeng.css";
+@import  "/node_modules/primeicons/primeicons.css"; */
+
+.info{
+    font-weight: bold;
+}
+
+:host p-table ::ng-deep   {
+  width: 100%;
+}
+
+
+:host p-table ::ng-deep  .p-datatable .p-datatable-thead > tr > th{
+    background-color: rgb(255, 70, 70) !important;
+    color: white;
+}
+:host p-table ::ng-deep  .p-datatable .p-datatable-header{
+    background-color: rgb(252, 23, 23) !important;
+}
+:host p-table ::ng-deep  .p-datatable .p-datatable-tbody > tr > td{
+ border-bottom: 1px solid red
+}
+.status{
+    color: white;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+#outer{
+    width:100%;
+    text-align: center;
+}
+
+.inner
+{
+    display: inline-block;
+
+}
+:host ::ng-deep  .p-button:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+ }
+
+ :host ::ng-deep .p-cell-editing {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.custom-day {
+    text-align: center;
+    padding: 0.185rem 0.25rem;
+    border-radius: 0.25rem;
+    display: inline-block;
+    width: 2rem;
+  }
+  .custom-day:hover, .custom-day.focused {
+    background-color: #2eb9fa;
+  }
+
+  :host p-dropdown ::ng-deep .p-element {
+    font-size: 12px !important;
+
+  }
+
+

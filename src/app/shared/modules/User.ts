@@ -1,3 +1,4 @@
+import { Line } from "./Line";
 
 
 export class User{
@@ -9,7 +10,7 @@ export class User{
     tele?:string;;
     fonction?:string;;
     email?:string;
-    line?:string;
+    line?:Line;
     matricule?:number;
     roles?:string [];
 }

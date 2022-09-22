@@ -1,0 +1,131 @@
+<div class="row">
+    <div class="col-md-12" style="text-align: center;">
+        <h3>Add new user</h3>
+    </div>
+    <p-toast position="top-right" key="tl"></p-toast>
+    <div *ngIf="show" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span align="center !important" class="sr-only" id="loading"></span>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 15px;">
+        <div class="col-md-12">
+            <div class="card" style="padding: 15px;">
+                <form [formGroup]="userForm" (ngSubmit)="saveUser()" #userform>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <label>First Name</label>
+                                <input type="text" class="form-control" name="prenom" id="prenom"
+                                    formControlName="prenom">
+                                <div *ngIf="prenom.invalid && (prenom.touched || prenom.dirty)"
+                                    class="text text-danger">
+                                    <div *ngIf="prenom.errors?.required">
+                                        This field is required.
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" name="nom" id="nom"
+                                    formControlName="nom">
+                                <div *ngIf="nom.invalid && (nom.touched || nom.dirty)"
+                                    class="text text-danger">
+                                    <div *ngIf="nom.errors?.required">
+                                        This field is required.
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <label>Register Number</label>
+                                <input type="number" class="form-control" name="matricule" id="matricule"
+                                    formControlName="matricule">
+                                <div *ngIf="matricule.invalid && (matricule.touched || matricule.dirty)"
+                                    class="text text-danger">
+                                    <div *ngIf="matricule.errors?.required">
+                                        This field is required.
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <label for="function" class="mb-2">function</label>
+                                <select name="function" id="function" class="form-control" formControlName="fonction">
+                                    <option value="select" selected disabled>Select function</option>
+                                    <option value="Controleur Production">Controleur Production</option>
+                                    <option value="Superviseur">Superviseur</option>
+                                    <option value="Technical Expert">Technical Expert</option>
+                                    <option value="Chef Equipe">Chef Equipe</option>
+                                    <option value="MAINTENANCE">MAINTENANCE</option>
+                                    <option value="OPERATEUR">OPERATEUR</option>
+                                </select>
+                                <div *ngIf="fonction.invalid && (fonction.touched || fonction.dirty)"
+                                    class="text text-danger">
+                                    <div *ngIf="fonction.errors?.required">
+                                        This field is required.
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <label>Phone Number</label>
+                                <input type="number" class="form-control" name="tele" id="tele"
+                                    formControlName="tele">
+                                <div *ngIf="tele.invalid && (tele.touched || tele.dirty)"
+                                    class="text text-danger">
+                                    <div *ngIf="tele.errors?.required">
+                                        This field is required.
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <label>Email</label>
+                                <input type="email" class="form-control" name="email" id="email" formControlName="email">
+                                <div *ngIf="email.invalid && (email.touched || email.dirty)" class="text text-danger">
+                                    <div *ngIf="email.errors?.email">
+                                        This field is must be an email.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!--   optionValue="designation" -->
+                            <label for="role" class="mb-2" style="display: block;">Line</label>
+                            <p-multiSelect [options]="lines" formControlName="line"[filter]="true"  optionLabel="designation"
+                                defaultLabel="Select line" id="line" name="line" [selectionLimit]=1 class="multiselect-custom" display="chip">
+                            </p-multiSelect>
+                         
+                        </div>
+                    </div>
+                    <div class="row">
+                          <div class="col-md-12" style="text-align: right;">
+                            <p-button label="save" icon="pi pi-save" styleClass="p-button-sm" class="m-3"   [disabled]="!userForm.valid"
+                            type="Submit"></p-button>
+                            <!-- style="float: right;"  -->
+                          </div>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

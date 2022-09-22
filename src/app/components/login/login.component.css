@@ -2,28 +2,24 @@
 .main-div{
     padding: 0;
 }
-.login-form{
-    padding: 20px;
+
+
+input{
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    margin-bottom: 25px;
+    width: 350px;
 }
 
-.container{
-  padding: 15px;
-  width:300 px ;
-  height: 200px;
-}
+/* .p-inputtext:enabled:focus{
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-color: #4D80CA !important;
+    box-shadow: 0 0 0 0.02rem green !important;
+} */
 
- ::ng-deep .mat-focused .mat-form-field-label {
-  /*change color of label*/
-  color: #d3a306 !important;
- }
 
- ::ng-deep.mat-form-field-underline {
-  /*change color of underline*/
-  background-color: #d3a306 !important;
-} 
 
-::ng-deep.mat-form-field-ripple {
- /*change color of underline when focused*/
- background-color: #d3a306 !important;;
-}
 
