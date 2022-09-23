@@ -162,7 +162,7 @@ export class HomeComponent implements OnInit {
     }
 
    })
-  // console.log("  this.list ", this.list +"\n"+found);
+
    this.columns = this.columnClone
   this.selectedDate = this.dates[0]
   this.listStatisticsMonth[0].listStatistics.forEach(element => {
